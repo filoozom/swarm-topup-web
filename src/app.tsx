@@ -96,6 +96,8 @@ const TopUp = () => {
         "Amount" field below, and click "Top Up" to send your transactions to
         the network.
       </p>
+      <h3>Create and Send Transactions</h3>
+      <hr />
       <form onSubmit={(event) => topUp(event)}>
         <p>
           <input
@@ -103,7 +105,7 @@ const TopUp = () => {
             value={batchId}
             onChange={(event) => setBatchId(event.currentTarget.value)}
           />
-          <label>Topup Amount Per Chunk Per Block</label>
+          <label><strong>Topup Amount Per Chunk Per Block</strong></label>
         </p>
         <p>
           <input
@@ -117,6 +119,9 @@ const TopUp = () => {
         </p>
       </form>
       <TimeToLive batchId={batchId} />
+      <hr />
+      <p>Once you have pressed the "Top up" button you will be asked to authorise two transactions.</p>
+      <p>Thank you for supporting the Hacker Manifesto!</p>
     </>
   );
 };
