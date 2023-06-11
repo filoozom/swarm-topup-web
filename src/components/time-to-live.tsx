@@ -2,21 +2,29 @@ import { formatDuration, intervalToDuration } from 'date-fns'
 
 // Hooks
 import { useTimeToLive } from '../hooks/useTimeToLive'
+import { useLastPrice } from '../hooks/useLastPrice'
+import { BigNumber } from 'ethers'
 
 type TimeToLiveProps = {
-	batchId: string
+	batchId: string,
+	amount?: number
 }
 
-export const TimeToLive = ({ batchId }: TimeToLiveProps) => {
+export const TimeToLive = ({ batchId, amount = 0 }: TimeToLiveProps) => {
 	const ttl = useTimeToLive(batchId)
+	const lastPrice = useLastPrice()
+
 	if (!ttl.data) {
 		return null
 	}
 
+	const additionalTtl = Math.floor(BigNumber.from(amount)/lastPrice.data)*5
+	const projectedTtl = ttl.data.add(additionalTtl)
+
 	const duration = intervalToDuration({
 		start: new Date(0),
-		end: new Date(1000 * Number(ttl.data)),
+		end: new Date(1000 * Number(projectedTtl)),
 	})
 
-	return <div>Time to live: {formatDuration(duration)}</div>
+	return <div>{formatDuration(duration)}</div>
 }
